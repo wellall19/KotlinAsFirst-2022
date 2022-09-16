@@ -75,7 +75,7 @@ fun ageDescription(age: Int): String {
     val p = age % 10
     return when {
         p == 1 && age != 11 && age != 111 -> "$age год"
-        (p == 2 || p == 3 || p == 4) && (age != 12) && (age != 13) && (age != 14) -> "$age года"
+        (p == 2 || p == 3 || p == 4) && (age % 100 != 12) && (age % 100 != 13) && (age % 100 != 14) -> "$age года"
         else -> "$age лет"
     }
 }
@@ -95,11 +95,11 @@ fun timeForHalfWay(
     val s1 = t1 * v1
     val s2 = t2 * v2
     val s3 = t3 * v3
-    val S = (s1 + s2 + s3) / 2
+    val sum = (s1 + s2 + s3) / 2
     return when {
-        s1 >= S -> S / v1
-        s1 + s2 >= S -> t1 + (S - s1) / v2
-        else -> t1 + t2 + (S - s1 - s2) / v3
+        s1 >= sum -> sum / v1
+        s1 + s2 >= sum -> t1 + (sum - s1) / v2
+        else -> t1 + t2 + (sum - s1 - s2) / v3
     }
 }
 
@@ -117,9 +117,11 @@ fun whichRookThreatens(
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
 ): Int {
-    if ((kingX == rookX1 || kingY == rookY1) && (kingX == rookX2 || kingY == rookY2)) return 3
-    if (kingX == rookX1 || kingY == rookY1) return 1
-    if (kingX == rookX2 || kingY == rookY2) return 2
+    val a = kingX == rookX1 || kingY == rookY1
+    val b = kingX == rookX2 || kingY == rookY2
+    if (a && b) return 3
+    if (a) return 1
+    if (b) return 2
     else return 0
 }
 
@@ -175,7 +177,7 @@ fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
     if ((b < c) || (d < a)) return -1
     if (b == c) return 0
     if (c <= a && b <= d) return b - a
-    if ((c < b) && (b < d)) return b - c
-    if ((c < b) && (c < a)) return d - a
-    else return d - c
+    if (b < d) return b - c
+    return if (c < a) d - a
+    else d - c
 }

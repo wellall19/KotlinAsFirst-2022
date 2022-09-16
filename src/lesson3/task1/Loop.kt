@@ -76,7 +76,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  */
 fun digitNumber(n: Int): Int {
     var cnt = 0
-    var m = n
+    var m = abs(n)
     do {
         cnt++
         m /= 10
@@ -91,8 +91,16 @@ fun digitNumber(n: Int): Int {
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
 fun fib(n: Int): Int {
+    var pos = 1
+    var pr = 1
+    var sech = 1
+    for (i in 3..n) {
+        sech = pos + pr
+        pos = pr
+        pr = sech
+    }
     return if (n == 1 || n == 2) 1
-    else fib(n - 2) + fib(n - 1)
+    else sech
 }
 
 /**
@@ -101,7 +109,7 @@ fun fib(n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    for (i in 2..n.toDouble().toInt()) {
+    for (i in 2..n.toDouble().pow(0.5).toInt()) {
         if (n % i == 0) return i
     }
     return n
@@ -150,10 +158,13 @@ fun collatzSteps(x: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    for (i in max(n, m)..n * m) {
-        if (i % m == 0 && i % n == 0) return i
+    var x = m
+    var y = n
+    while (x != y) {
+        if (x > y) x -= y
+        else y -= x
     }
-    return m * n
+    return m * n / x
 }
 
 /**
@@ -257,7 +268,27 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var x = 0
+    var cnt = 0
+    var s = 1
+    while (cnt < n) {
+        var t = 0
+        var pr = s * s
+        while (pr > 0) {
+            t += 1
+            pr /= 10
+        }
+        x = s * s
+        s += 1
+        cnt += t
+    }
+    if (cnt == n) return x % 10
+    else {
+        val r = cnt - n
+        return (x % (10.0.pow(r + 1))).toInt() / (10.0.pow(r).toInt())
+    }
+}
 
 /**
  * Сложная (5 баллов)
