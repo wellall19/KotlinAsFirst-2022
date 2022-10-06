@@ -276,17 +276,17 @@ fun squareSequenceDigit(n: Int): Int {
         var t = 0
         var pr = s * s
         while (pr > 0) {
-            t += 1
+            t++
             pr /= 10
         }
         x = s * s
         s += 1
         cnt += t
     }
-    if (cnt == n) return x % 10
+    return if (cnt == n) x % 10
     else {
         val r = cnt - n
-        return (x % (10.0.pow(r + 1))).toInt() / (10.0.pow(r).toInt())
+        (x % (10.0.pow(r + 1))).toInt() / (10.0.pow(r).toInt())
     }
 }
 
@@ -299,4 +299,27 @@ fun squareSequenceDigit(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var pr = 1
+    var posp = 1
+    var cnt = 2
+    var x = 0
+    while (cnt < n) {
+        var t = 0
+        var sech = posp + pr
+        val sec = sech
+        while (sech > 0) {
+            t++
+            sech /= 10
+        }
+        cnt += t
+        posp = pr
+        pr = sec
+        x = sec
+    }
+    return when (n) {
+        1, 2 -> 1
+        cnt -> x % 10
+        else -> (x / (10.0.pow(cnt - n).toInt()) % (10.0.pow(cnt - n))).toInt()
+    }
+}
