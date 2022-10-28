@@ -165,6 +165,7 @@ class Tests {
         assertEquals(listOf(2), factorize(2))
         assertEquals(listOf(3, 5, 5), factorize(75))
         assertEquals(listOf(2, 3, 3, 19), factorize(342))
+        assertEquals(listOf(2, 997), factorize(1994))
     }
 
     @Test
@@ -185,6 +186,7 @@ class Tests {
         assertEquals(listOf(1, 2, 1, 0), convert(100, 4))
         assertEquals(listOf(1, 3, 12), convert(250, 14))
         assertEquals(listOf(2, 14, 12), convert(1000, 19))
+        assertEquals(listOf(0), convert(0, 19))
     }
 
     @Test
@@ -202,6 +204,7 @@ class Tests {
     @Tag("3")
     fun decimal() {
         assertEquals(1, decimal(listOf(1), 2))
+        assertEquals(250, decimal(listOf(1, 3, 12), 14))
         assertEquals(100, decimal(listOf(1, 2, 1, 0), 4))
         assertEquals(250, decimal(listOf(1, 3, 12), 14))
         assertEquals(1000, decimal(listOf(2, 14, 12), 19))

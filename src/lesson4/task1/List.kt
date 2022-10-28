@@ -2,12 +2,10 @@
 
 package lesson4.task1
 
-import kotlinx.html.attributes.stringSetDecode
 import lesson1.task1.discriminant
 import lesson3.task1.isPrime
 import kotlin.math.pow
 import kotlin.math.sqrt
-import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
 // Урок 4: списки
 // Максимальное количество баллов = 12
@@ -124,28 +122,15 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double {
-    val l = v.size
-    if (l == 0) return 0.0
-    else {
-        var n = 0
-        for (i in 0 until l) {
-            n += v[i].toInt() * v[i].toInt()
-        }
-        return sqrt(n.toDouble())
-    }
-}
+fun abs(v: List<Double>): Double =
+    if (v.isEmpty()) 0.0 else sqrt(v.map { it*it }.sum())
 
 /**
  * Простая (2 балла)
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double {
-    val l = list.size
-    if (l == 0) return 0.0
-    return list.sum() / l
-}
+fun mean(list: List<Double>): Double = if (list.isEmpty()) 0.0 else list.sum() / list.size
 
 /**
  * Средняя (3 балла)
@@ -156,12 +141,8 @@ fun mean(list: List<Double>): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
-    val l = list.size
-    if (l == 0) return list
-    val sr = list.sum() / l
-    for (i in 0 until l) {
-        list[i] = list[i] - sr
-    }
+    val k = mean(list)
+    list.forEachIndexed { index, d -> list[index] = d - k }
     return list
 }
 
@@ -172,15 +153,9 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.
  */
-fun times(a: List<Int>, b: List<Int>): Int {
-    val l = a.size
-    if (l == 0) return 0
-    var c = 0
-    for (i in 0 until l) {
-        c += a[i] * b[i]
-    }
-    return c
-}
+fun times(a: List<Int>, b: List<Int>): Int =
+    a.mapIndexed { index, i -> i * b[index] }.sum()
+
 
 /**
  * Средняя (3 балла)
@@ -190,15 +165,8 @@ fun times(a: List<Int>, b: List<Int>): Int {
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0 при любом x.
  */
-fun polynom(p: List<Int>, x: Int): Int {
-    val l = p.size
-    if (l == 0) return 0
-    var s = 0
-    for (i in 0 until l) {
-        s += p[i] * x.toDouble().pow(i).toInt()
-    }
-    return s
-}
+fun polynom(p: List<Int>, x: Int): Int =
+    p.mapIndexed { index, i -> i * x.toDouble().pow(index).toInt() }.sum()
 
 /**
  * Средняя (3 балла)
@@ -231,10 +199,13 @@ fun factorize(n: Int): List<Int> {
             while (number % i == 0) {
                 list.add(i)
                 number /= i
+                if (isPrime(n / i)) {
+                    list.add(n / i)
+                }
             }
         }
     }
-    return list
+    return list.sorted()
 }
 
 /**
@@ -256,6 +227,10 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
 fun convert(n: Int, base: Int): List<Int> {
     var m = n
     val list = mutableListOf<Int>()
+    if (n == 0) {
+        list.add(0)
+        return list
+    }
     while (m > 0) {
         list.add(m % base)
         m /= base
@@ -285,7 +260,9 @@ fun convertToString(n: Int, base: Int): String = convert(n, base)
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int =
+    digits.mapIndexed { index, i -> i * base.toDouble().pow((digits.size - 1 - index).toDouble()).toInt() }.sum()
+
 
 /**
  * Сложная (4 балла)
@@ -299,7 +276,8 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, str.toInt(base)), запрещается.
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+fun decimalFromString(str: String, base: Int): Int =
+    decimal( str.map { if (it.isLetter()) it + 10 - 'a' else it - '0' }, base)
 
 /**
  * Сложная (5 баллов)

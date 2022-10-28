@@ -320,6 +320,6 @@ fun fibSequenceDigit(n: Int): Int {
     return when (n) {
         1, 2 -> 1
         cnt -> x % 10
-        else -> (x / (10.0.pow(cnt - n).toInt()) % (10.0.pow(cnt - n))).toInt()
+        else -> (x / (10.0.pow(cnt - n).toInt()) % 10)
     }
 }
