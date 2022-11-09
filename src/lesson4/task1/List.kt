@@ -123,7 +123,7 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * Модуль пустого вектора считать равным 0.0.
  */
 fun abs(v: List<Double>): Double =
-    if (v.isEmpty()) 0.0 else sqrt(v.map { it*it }.sum())
+    if (v.isEmpty()) 0.0 else sqrt(v.map { it * it }.sum())
 
 /**
  * Простая (2 балла)
@@ -194,14 +194,11 @@ fun factorize(n: Int): List<Int> {
     if (isPrime(n)) return listOf(n)
     var number = n
     val list = mutableListOf<Int>()
-    for (i in 2..sqrt(n.toDouble()).toInt() + 1) {
+    for (i in 2..n / 2) {
         if (isPrime(i)) {
             while (number % i == 0) {
                 list.add(i)
                 number /= i
-                if (isPrime(n / i)) {
-                    list.add(n / i)
-                }
             }
         }
     }
@@ -225,12 +222,9 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
 fun convert(n: Int, base: Int): List<Int> {
+    if (n == 0) return listOf(0)
     var m = n
     val list = mutableListOf<Int>()
-    if (n == 0) {
-        list.add(0)
-        return list
-    }
     while (m > 0) {
         list.add(m % base)
         m /= base
@@ -277,7 +271,7 @@ fun decimal(digits: List<Int>, base: Int): Int =
  * (например, str.toInt(base)), запрещается.
  */
 fun decimalFromString(str: String, base: Int): Int =
-    decimal( str.map { if (it.isLetter()) it + 10 - 'a' else it - '0' }, base)
+    decimal(str.map { if (it.isLetter()) it + 10 - 'a' else it - '0' }, base)
 
 /**
  * Сложная (5 баллов)

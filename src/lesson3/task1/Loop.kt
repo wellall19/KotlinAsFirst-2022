@@ -214,8 +214,7 @@ fun isPalindrome(n: Int): Boolean {
         m = m * 10 + x % 10
         x /= 10
     }
-    return if (m == n) true
-    else false
+    return m == n
 }
 
 /**
@@ -280,7 +279,7 @@ fun squareSequenceDigit(n: Int): Int {
             pr /= 10
         }
         x = s * s
-        s += 1
+        s++
         cnt += t
     }
     return if (cnt == n) x % 10
