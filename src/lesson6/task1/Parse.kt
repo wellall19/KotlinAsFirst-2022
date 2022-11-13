@@ -88,7 +88,7 @@ fun dateStrToDigit(str: String): String = TODO()
  * входными данными.
  */
 fun dateDigitToStr(digital: String): String {
-    val matched = digital.matches(Regex("""(\d\d)\.(\d\d)\.(\d\d\d\d)"""))
+    val matched = digital.matches(Regex("""(\d\d)\.(\d\d)\.(\d+)"""))
     if (!matched) return ""
     val date = digital.split(".").map { it.toInt() }
     val d = date[0]
