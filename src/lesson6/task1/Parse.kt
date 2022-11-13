@@ -76,7 +76,46 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val matched = str.matches(Regex("""(\d+)\s([а-я]+)\s(\d+)"""))
+    if (!matched) return ""
+    val date = str.split(" ")
+    val month = listOf<String>(
+        "января",
+        "февраля",
+        "марта",
+        "апреля",
+        "мая",
+        "июня",
+        "июля",
+        "августа",
+        "сентября",
+        "октября",
+        "ноября",
+        "декабря"
+    )
+    if (!month.contains(date[1])) return ""
+    val d = date[0].toInt()
+    val d2 = date[2].toInt()
+    val d1 =
+        when (date[1]) {
+            "января" -> 1
+            "февраля" -> 2
+            "марта" -> 3
+            "апреля" -> 4
+            "мая" -> 5
+            "июня" -> 6
+            "июля" -> 7
+            "августа" -> 8
+            "сентября" -> 9
+            "октября" -> 10
+            "ноября" -> 11
+            "декабря" -> 12
+            else -> -1
+        }
+    if (daysInMonth(d1, d2) < d) return ""
+    return "${twoDigitStr(d)}.${twoDigitStr(d1)}.${d2}"
+}
 
 
 /**
@@ -96,7 +135,7 @@ fun dateDigitToStr(digital: String): String {
     val d = date[0]
     val d1 = date[1]
     val d2 = date[2]
-    if (daysInMonth(d1,d2) < d) return ""
+    if (daysInMonth(d1, d2) < d) return ""
     return when (d1) {
         1 -> "${d} января ${date[2]}"
         2 -> "${d} февраля ${date[2]}"
