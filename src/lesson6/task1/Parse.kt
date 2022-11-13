@@ -76,6 +76,7 @@ fun main() {
  */
 fun dateStrToDigit(str: String): String = TODO()
 
+
 /**
  * Средняя (4 балла)
  *
@@ -86,7 +87,32 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val matched = digital.matches(Regex("""(\d\d)\.(\d\d)\.(\d\d\d\d)"""))
+    if (!matched) return ""
+    val date = digital.split(".").map { it.toInt() }
+    val d = date[0]
+    val d1 = date[1]
+    val d3 = date[2]
+    if ((d > 31) || ((d1 == 4 || d1 == 6 || d1 == 9 || d1 == 1) && d > 30) || (d1 == 2 && d > 29 && d3 % 4 == 0) ||
+        (d1 == 2 && d > 28 && d3 % 4 != 0)
+    ) return ""
+    return when (d1) {
+        1 -> "${d} января ${date[2]}"
+        2 -> "${d} февраля ${date[2]}"
+        3 -> "${d} марта ${date[2]}"
+        4 -> "${d} апреля ${date[2]}"
+        5 -> "${d} мая ${date[2]}"
+        6 -> "${d} июня ${date[2]}"
+        7 -> "${d} июля ${date[2]}"
+        8 -> "${d} августа ${date[2]}"
+        9 -> "${d} сентября ${date[2]}"
+        10 -> "${d} октября ${date[2]}"
+        11 -> "${d} ноября ${date[2]}"
+        12 -> "${d} декабря ${date[2]}"
+        else -> ""
+    }
+}
 
 /**
  * Средняя (4 балла)
