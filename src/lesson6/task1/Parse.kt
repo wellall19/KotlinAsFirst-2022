@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import lesson2.task2.daysInMonth
+
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
 // Рекомендуемое количество баллов = 11
@@ -93,10 +95,8 @@ fun dateDigitToStr(digital: String): String {
     val date = digital.split(".").map { it.toInt() }
     val d = date[0]
     val d1 = date[1]
-    val d3 = date[2]
-    if ((d > 31) || ((d1 == 4 || d1 == 6 || d1 == 9 || d1 == 11) && d > 30) || (d1 == 2 && d > 29 && d3 % 4 == 0) ||
-        (d1 == 2 && d > 28 && d3 % 4 != 0)
-    ) return ""
+    val d2 = date[2]
+    if (daysInMonth(d1,d2) < d) return ""
     return when (d1) {
         1 -> "${d} января ${date[2]}"
         2 -> "${d} февраля ${date[2]}"
