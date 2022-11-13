@@ -94,7 +94,7 @@ fun dateDigitToStr(digital: String): String {
     val d = date[0]
     val d1 = date[1]
     val d3 = date[2]
-    if ((d > 31) || ((d1 == 4 || d1 == 6 || d1 == 9 || d1 == 1) && d > 30) || (d1 == 2 && d > 29 && d3 % 4 == 0) ||
+    if ((d > 31) || ((d1 == 4 || d1 == 6 || d1 == 9 || d1 == 11) && d > 30) || (d1 == 2 && d > 29 && d3 % 4 == 0) ||
         (d1 == 2 && d > 28 && d3 % 4 != 0)
     ) return ""
     return when (d1) {
