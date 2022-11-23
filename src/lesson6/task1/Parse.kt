@@ -3,6 +3,7 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
+import ru.spbstu.kotlin.generate.assume.retry
 
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
@@ -165,7 +166,10 @@ fun flattenPhoneNumber(phone: String): String =
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int =
+    if (jumps.contains(Regex("""[^\d\s%\-]"""))) -1
+    else
+        jumps.split(Regex("""\s+""")).filter { it != "-" && it != "%" }.maxOfOrNull { it.toInt() } ?: -1
 
 /**
  * Сложная (6 баллов)
@@ -178,7 +182,15 @@ fun bestLongJump(jumps: String): Int = TODO()
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    if (jumps.contains(Regex("""[^\d\s%\-+]"""))) return -1
+    val res = jumps.split(" ")
+    return res.filterIndexed { index, s ->
+        index != res.lastIndex && s.matches(Regex("""\d+"""))
+                && "+" in res[index + 1]
+    }.maxOfOrNull { it.toInt() } ?: -1
+}
+
 
 /**
  * Сложная (6 баллов)
