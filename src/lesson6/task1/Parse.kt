@@ -169,7 +169,7 @@ fun flattenPhoneNumber(phone: String): String =
 fun bestLongJump(jumps: String): Int =
     if (jumps.contains(Regex("""[^\d\s%\-]"""))) -1
     else
-        jumps.split(Regex("""\s+""")).filter { it != "-" && it != "%" }.maxOfOrNull { it.toInt() } ?: -1
+        jumps.split(Regex("""\s+""")).filter { it.matches(Regex("""\d+""")) }.maxOfOrNull { it.toInt() } ?: -1
 
 /**
  * Сложная (6 баллов)
@@ -201,7 +201,17 @@ fun bestHighJump(jumps: String): Int {
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    if (expression.matches(Regex("""\d+(\s+[+-]\s+\d+)*"""))) {
+        val s = expression.split(Regex("""\s+"""))
+        var sum = s[0].toInt()
+        for (i in 1 until s.lastIndex) {
+            if (s[i] == "+") sum += s[i + 1].toInt()
+            if (s[i] == "-") sum -= s[i + 1].toInt()
+        }
+        return sum
+    } else throw IllegalArgumentException()
+}
 
 /**
  * Сложная (6 баллов)
