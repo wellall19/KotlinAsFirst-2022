@@ -80,21 +80,6 @@ fun dateStrToDigit(str: String): String {
     val matched = str.matches(Regex("""(\d+)\s([а-я]+)\s(\d+)"""))
     if (!matched) return ""
     val date = str.split(" ")
-    val month = listOf<String>(
-        "января",
-        "февраля",
-        "марта",
-        "апреля",
-        "мая",
-        "июня",
-        "июля",
-        "августа",
-        "сентября",
-        "октября",
-        "ноября",
-        "декабря"
-    )
-    if (!month.contains(date[1])) return ""
     val d = date[0].toInt()
     val d2 = date[2].toInt()
     val d1 =
@@ -111,7 +96,7 @@ fun dateStrToDigit(str: String): String {
             "октября" -> 10
             "ноября" -> 11
             "декабря" -> 12
-            else -> -1
+            else -> return ""
         }
     if (daysInMonth(d1, d2) < d) return ""
     return "${twoDigitStr(d)}.${twoDigitStr(d1)}.${d2}"
@@ -132,23 +117,21 @@ fun dateDigitToStr(digital: String): String {
     val matched = digital.matches(Regex("""(\d\d)\.(\d\d)\.(\d+)"""))
     if (!matched) return ""
     val date = digital.split(".").map { it.toInt() }
-    val d = date[0]
-    val d1 = date[1]
-    val d2 = date[2]
+    val (d, d1, d2) = date
     if (daysInMonth(d1, d2) < d) return ""
     return when (d1) {
-        1 -> "${d} января ${date[2]}"
-        2 -> "${d} февраля ${date[2]}"
-        3 -> "${d} марта ${date[2]}"
-        4 -> "${d} апреля ${date[2]}"
-        5 -> "${d} мая ${date[2]}"
-        6 -> "${d} июня ${date[2]}"
-        7 -> "${d} июля ${date[2]}"
-        8 -> "${d} августа ${date[2]}"
-        9 -> "${d} сентября ${date[2]}"
-        10 -> "${d} октября ${date[2]}"
-        11 -> "${d} ноября ${date[2]}"
-        12 -> "${d} декабря ${date[2]}"
+        1 -> "$d января ${date[2]}"
+        2 -> "$d февраля ${date[2]}"
+        3 -> "$d марта ${date[2]}"
+        4 -> "$d апреля ${date[2]}"
+        5 -> "$d мая ${date[2]}"
+        6 -> "$d июня ${date[2]}"
+        7 -> "$d июля ${date[2]}"
+        8 -> "$d августа ${date[2]}"
+        9 -> "$d сентября ${date[2]}"
+        10 -> "$d октября ${date[2]}"
+        11 -> "$d ноября ${date[2]}"
+        12 -> "$d декабря ${date[2]}"
         else -> ""
     }
 }
