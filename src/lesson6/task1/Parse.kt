@@ -222,7 +222,15 @@ fun plusMinus(expression: String): Int {
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    val words = str.split(" ")
+    var sumindex = 0
+    for (i in 0 until words.lastIndex) {
+        if (words[i].equals(words[i + 1], true)) return sumindex
+        sumindex += words[i].length + 1
+    }
+    return -1
+}
 
 /**
  * Сложная (6 баллов)
@@ -235,7 +243,23 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше нуля либо равны нулю.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    if (description.matches(Regex("""\D+\s\d+\.\d+(;\s\D+\s\d+\.\d+)*"""))) {
+        val description2 = description.split("; ")
+        val products = mutableMapOf<String, Int>()
+        var expensive = ""
+        var maxx = 0.0
+        for (element in description2) {
+            val i = element.split(" ")
+            if (i[1].toDouble() > maxx) {
+                expensive = i[0]
+                maxx = i[1].toDouble()
+            }
+        }
+        return expensive
+    }
+    return ""
+}
 
 /**
  * Сложная (6 баллов)
