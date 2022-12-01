@@ -169,7 +169,9 @@ fun flattenPhoneNumber(phone: String): String =
 fun bestLongJump(jumps: String): Int =
     if (jumps.contains(Regex("""[^\d\s%\-]"""))) -1
     else
-        jumps.split(Regex("""\s+""")).filter { it.matches(Regex("""\d+""")) }.maxOfOrNull { it.toInt() } ?: -1
+        jumps.split(Regex("""\s+""")).filter {
+            it.matches(Regex("""\d+"""))
+        }.maxOfOrNull { it.toInt() } ?: -1
 
 /**
  * Сложная (6 баллов)
@@ -183,12 +185,14 @@ fun bestLongJump(jumps: String): Int =
  * вернуть -1.
  */
 fun bestHighJump(jumps: String): Int {
-    if (jumps.contains(Regex("""[^\d\s%\-+]"""))) return -1
-    val res = jumps.split(" ")
-    return res.filterIndexed { index, s ->
-        index != res.lastIndex && s.matches(Regex("""\d+"""))
-                && "+" in res[index + 1]
-    }.maxOfOrNull { it.toInt() } ?: -1
+    if (jumps.matches(Regex("""\d+\s[+\-%]+(\s\d+\s[+\-%]+)*"""))) {
+        val res = jumps.split(" ")
+        return res.filterIndexed { index, s ->
+            index != res.lastIndex && s.matches(Regex("""\d+"""))
+                    && "+" in res[index + 1]
+        }.maxOfOrNull { it.toInt() } ?: -1
+    }
+    return -1
 }
 
 
@@ -210,7 +214,8 @@ fun plusMinus(expression: String): Int {
             if (s[i] == "-") sum -= s[i + 1].toInt()
         }
         return sum
-    } else throw IllegalArgumentException()
+    }
+    throw IllegalArgumentException()
 }
 
 /**
@@ -244,7 +249,7 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть больше нуля либо равны нулю.
  */
 fun mostExpensive(description: String): String {
-    if (description.matches(Regex(""".+\s\d+(\.\d+)*(;\s.+\s\d+(\.\d+)*)*"""))) {
+    if (description.matches(Regex(""".+\s\d+(\.)?\d+(;\s.+\s\d+(\.)?\d*)*"""))) {
         val description2 = description.split("; ")
         val products = mutableMapOf<String, Int>()
         var expensive = ""
