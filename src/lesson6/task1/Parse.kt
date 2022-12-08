@@ -3,7 +3,6 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
-import ru.spbstu.kotlin.generate.assume.retry
 
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
@@ -167,7 +166,9 @@ fun flattenPhoneNumber(phone: String): String =
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
 fun bestLongJump(jumps: String): Int =
-    if (jumps.contains(Regex("""[^\d\s%\-]"""))) -1
+    if (jumps.contains(Regex("""%-|-%|%\d+|\d+%|-\d+|\d+-|%%|--|\s\s"""))
+        || jumps.contains(Regex("""[^\d\s%-]"""))
+    ) -1
     else
         jumps.split(Regex("""\s+""")).filter {
             it.matches(Regex("""\d+"""))
@@ -206,16 +207,14 @@ fun bestHighJump(jumps: String): Int {
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
-    if (expression.matches(Regex("""\d+(\s+[+-]\s+\d+)*"""))) {
-        val s = expression.split(Regex("""\s+"""))
-        var sum = s[0].toInt()
-        for (i in 1 until s.lastIndex) {
-            if (s[i] == "+") sum += s[i + 1].toInt()
-            if (s[i] == "-") sum -= s[i + 1].toInt()
-        }
-        return sum
+    if (!expression.matches(Regex("""\d+(\s+[+-]\s+\d+)*"""))) throw IllegalArgumentException()
+    val s = expression.split(Regex("""\s+"""))
+    var sum = s[0].toInt()
+    for (i in 1 until s.lastIndex) {
+        if (s[i] == "+") sum += s[i + 1].toInt()
+        if (s[i] == "-") sum -= s[i + 1].toInt()
     }
-    throw IllegalArgumentException()
+    return sum
 }
 
 /**
@@ -249,9 +248,8 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть больше нуля либо равны нулю.
  */
 fun mostExpensive(description: String): String {
-    if (description.matches(Regex(""".+\s\d+(\.)?\d+(;\s.+\s\d+(\.)?\d*)*"""))) {
+    if (description.matches(Regex(""".+\s\d+(\.\d+)?(;\s.+\s\d+(\.\d+)?)*"""))) {
         val description2 = description.split("; ")
-        val products = mutableMapOf<String, Int>()
         var expensive = ""
         var maxx = -1.0
         for (element in description2) {
@@ -314,5 +312,31 @@ fun fromRoman(roman: String): Int = TODO()
  * IllegalArgumentException.
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
+ */
+
+/**Быстрый поиск в телефонном справочнике
+/
+ * Имеется старый добрый телефон с клавиатурой вида:
+ *                  ABC(2)   DEF(3)
+ *       GHI(4)     JKL(5)   MNO(6)
+ *       PQRS(7)    TUV(8)   WXYZ(9)
+ *
+ * Дан список имен в телефонном справочнике.
+ * Для быстрого доступа к необходимому контакту в строке поиска
+ * телефонного справочника можно вводить цифры, соответствующие
+ * буквам искомого имени. Например, для поиска контакта с именем
+ * Maxim необходимо ввести последовательность “62946”. Для списка
+ * имен и цифровой последовательности необходимо вывести список
+ * контактов, имена которых можно получить, введя в телефонный
+ * справочник данную последовательность.
+ *
+ * Имя функции и тип результата функции предложить самостоятельно;
+ * в задании указан тип Collection<Any>,
+ * то есть коллекция объектов произвольного типа,
+ * можно (и нужно) изменить как вид коллекции,
+ * так и тип её элементов.
+ *
+ * Кроме функции, следует написать тесты,
+ * подтверждающие её работоспособность.
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
