@@ -83,15 +83,13 @@ fun deleteMarked(inputName: String, outputName: String) {
  *
  */
 
-fun String.containsAfter(substring: String, index: Int) = indexOf(substring, index) != -1
-
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
     val text = File(inputName).readText().lowercase()
     val entry = mutableMapOf<String, Int>()
     substrings.forEach {
         val substring = it.lowercase()
         var (count, index) = 0 to 0
-        while (text.containsAfter(substring, index)) {
+        while (text.indexOf(substring, index) != -1) {
             index = text.indexOf(substring, index) + 1
             count++
         }
