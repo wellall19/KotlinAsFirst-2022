@@ -166,8 +166,7 @@ fun flattenPhoneNumber(phone: String): String =
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
 fun bestLongJump(jumps: String): Int =
-    if (jumps.contains(Regex("""%-|-%|%\d+|\d+%|-\d+|\d+-|%%|--|\s\s"""))
-        || jumps.contains(Regex("""[^\d\s%-]"""))
+    if (!jumps.contains(Regex("""(([\-%]\s)*\d+(\s[\-%]*)\s)+"""))
     ) -1
     else
         jumps.split(Regex("""\s+""")).filter {
@@ -248,20 +247,19 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть больше нуля либо равны нулю.
  */
 fun mostExpensive(description: String): String {
-    if (description.matches(Regex(""".+\s\d+(\.\d+)?(;\s.+\s\d+(\.\d+)?)*"""))) {
-        val description2 = description.split("; ")
-        var expensive = ""
-        var maxx = -1.0
-        for (element in description2) {
-            val i = element.split(" ")
-            if (i[1].toDouble() > maxx) {
-                expensive = i[0]
-                maxx = i[1].toDouble()
-            }
+    if (!description.matches(Regex("""[а-яА-ЯёЁa-zA-Z]+\s\d+(\.\d+)?(;\s[а-яА-ЯёЁa-zA-Z]+\s\d+(\.\d+)?)*"""))) return ""
+    val description2 = description.split("; ")
+    var expensive = ""
+    var max = -1.0
+    for (element in description2) {
+        val i = element.split(" ")
+        val cost = i[1].toDouble()
+        if (cost > max) {
+            expensive = i[0]
+            max = cost
         }
-        return expensive
     }
-    return ""
+    return expensive
 }
 
 /**
@@ -312,31 +310,5 @@ fun fromRoman(roman: String): Int = TODO()
  * IllegalArgumentException.
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
- */
-
-/**Быстрый поиск в телефонном справочнике
-/
- * Имеется старый добрый телефон с клавиатурой вида:
- *                  ABC(2)   DEF(3)
- *       GHI(4)     JKL(5)   MNO(6)
- *       PQRS(7)    TUV(8)   WXYZ(9)
- *
- * Дан список имен в телефонном справочнике.
- * Для быстрого доступа к необходимому контакту в строке поиска
- * телефонного справочника можно вводить цифры, соответствующие
- * буквам искомого имени. Например, для поиска контакта с именем
- * Maxim необходимо ввести последовательность “62946”. Для списка
- * имен и цифровой последовательности необходимо вывести список
- * контактов, имена которых можно получить, введя в телефонный
- * справочник данную последовательность.
- *
- * Имя функции и тип результата функции предложить самостоятельно;
- * в задании указан тип Collection<Any>,
- * то есть коллекция объектов произвольного типа,
- * можно (и нужно) изменить как вид коллекции,
- * так и тип её элементов.
- *
- * Кроме функции, следует написать тесты,
- * подтверждающие её работоспособность.
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()

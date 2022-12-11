@@ -63,14 +63,14 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Подчёркивание в середине и/или в конце строк значения не имеет.
  */
 fun deleteMarked(inputName: String, outputName: String) {
-    val writer = File(outputName).bufferedWriter()
-    for (line in File(inputName).readLines()) {
-        if (line.isEmpty() || !line.matches(Regex("""_.*"""))) {
-            writer.write(line)
-            writer.newLine()
+    File(outputName).bufferedWriter().use {
+        for (line in File(inputName).readLines()) {
+            if (line.isEmpty() || !line.startsWith("_")) {
+                it.write(line)
+                it.newLine()
+            }
         }
     }
-    writer.close()
 }
 
 /**
@@ -111,8 +111,25 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  * Исключения (жюри, брошюра, парашют) в рамках данного задания обрабатывать не нужно
  *
  */
+fun replacement(it: String) = when (it[1]) {
+    'я' -> "${it[0]}а"
+    'Я' -> "${it[0]}А"
+    'Ю' -> "${it[0]}У"
+    'ю' -> "${it[0]}у"
+    'ы' -> "${it[0]}и"
+    'Ы' -> "${it[0]}И"
+    else -> ""
+}
+
 fun sibilants(inputName: String, outputName: String) {
-    TODO()
+    var text = File(inputName).readText()
+    File(outputName).bufferedWriter().use {
+        val mistake = Regex("""[жшчщЖШЧЩ][ыяюЫЯЮ]""").findAll(text)
+        mistake.forEach { i ->
+            text = text.replaceRange(i.range, replacement(i.value))
+        }
+        it.write(text)
+    }
 }
 
 /**
@@ -133,7 +150,16 @@ fun sibilants(inputName: String, outputName: String) {
  *
  */
 fun centerFile(inputName: String, outputName: String) {
-    TODO()
+    val lines = File(inputName).readLines().map { it.trim() }
+    File(outputName).bufferedWriter().use { out ->
+        if (lines.isNotEmpty()) {
+            val max = lines.maxOf { it.length }
+            lines.forEach {
+                out.write(it.padStart((max + it.length) / 2))
+                out.appendLine()
+            }
+        }
+    }
 }
 
 /**
